@@ -252,15 +252,18 @@ int main() {
     // 初始化地图和节点
     Node *start = new Node(1, 1, 0.0f, nullptr); // 创建起始节点
     Node *goal_node = new Node(tx, ty, 0.0f, nullptr); // 创建目标节点
-
+    
     a_star(start, goal_node); // 执行 A* 算法
-
+    
+    
     // 清理内存
     delete start; // 释放起始节点内存
     delete goal_node; // 释放目标节点内存
 
     return 0; // 返回 0 结束程序
 }
+
+// 在终端编译 g++ -std=c++11 -o a_start main.cpp
 
 
 
