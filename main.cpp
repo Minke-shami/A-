@@ -9,6 +9,8 @@
 #include <queue>
 #include <algorithm>
 #include <cmath>
+#include "B_yang_tiao_qu_xian.hpp"
+
 
 using namespace std;
 
@@ -19,7 +21,7 @@ const int tx = 23; // 目标 x 坐标
 const int ty = 58; // 目标 y 坐标
 
 // 0 可行驶的路   1 不可行驶区域  2 起点  3 走过的路  9 是目标
-int map[h][l] = {
+int map1[h][l] = {
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4},
     {4,2,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
     {4,0,0,0,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
@@ -142,7 +144,7 @@ float smoothness_heuristic(const Node& node) {
 
 // 显示地图
 void show(int a[h][l]) {
-    map[tx][ty] = 9; // 设置目标点
+    map1[tx][ty] = 9; // 设置目标点
     for (int x = 0; x < h; ++x) { // 遍历每行
         for (int y = 0; y < l; ++y) { // 遍历每列
             switch (a[x][y]) { // 根据值打印不同的字符
@@ -198,12 +200,14 @@ void a_star(Node *start, Node *goal) {
 
             // 更新路径上的节点状态
             for (auto &node : path) {
-                map[node->x][node->y] = 3; // 标记路径上的节点
+                map1[node->x][node->y] = 3; // 标记路径上的节点
             }
 
+            
+            
             // 显示最终结果
             cout << "找到目标，步数：" << step << endl;
-            show(map); // 显示地图
+            show(map1); // 显示地图
             return; // 退出函数
         }
 
@@ -216,7 +220,7 @@ void a_star(Node *start, Node *goal) {
             int newX = current->x + directions[d][0]; // 新的 x 坐标
             int newY = current->y + directions[d][1]; // 新的 y 坐标
 
-            if (newX >= 0 && newX < h && newY >= 0 && newY < l && (map[newX][newY] == 0 || map[newX][newY] == 9)) { // 如果新坐标有效
+            if (newX >= 0 && newX < h && newY >= 0 && newY < l && (map1[newX][newY] == 0 || map1[newX][newY] == 9)) { // 如果新坐标有效
                 Node *neighbor = new Node(newX, newY, current->g + costs[d], current); // 创建邻居节点
                 neighbor->f = neighbor->g + smoothness_heuristic(*neighbor); // 计算邻居节点的总成本
 
@@ -245,7 +249,7 @@ void a_star(Node *start, Node *goal) {
         step++; // 增加步数
     }
     cout << "共 " << step << " 步" << endl;
-    show(map); // 显示地图
+    show(map1); // 显示地图
 }
 
 int main() {
@@ -259,8 +263,15 @@ int main() {
     // 清理内存
     delete start; // 释放起始节点内存
     delete goal_node; // 释放目标节点内存
+    
+    
 
     return 0; // 返回 0 结束程序
+    
+    
+    
+    
+    
 }
 
 // 在终端编译 g++ -std=c++11 -o a_start main.cpp
